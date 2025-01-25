@@ -5,3 +5,7 @@
 
 
 * STARBUCKS 스타벅스 웹페이지 ( HTML , CSS , JS ) 실습 -> master브런치
+
+
+# 실행방법
+해당코드를 다운로드받고, IDE(Vscode, Intellij)환경에서 해당 코드 폴더를 열고, Open Live Server로 실행한다.
