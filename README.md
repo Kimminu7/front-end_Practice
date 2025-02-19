@@ -5,6 +5,7 @@
  
 # 기술스택 
 프론트엔드 : HTML, CSS, js(jquery)
+Server,DB : Firebase 
 
 # 실행방법
 https://kimminu7.github.io/front-end_Practice/ << 경로로 접속
