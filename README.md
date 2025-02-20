@@ -6,7 +6,7 @@
 # 기술스택 
 * 프론트엔드 : HTML, CSS, js(jquery)
 * Server,DB : Firebase 
-* 배포 : github
+* 배포 : github ( 현재 x )
 
 # 실행방법
-https://kimminu7.github.io/front-end_Practice/ << 경로로 접속
+다운로드후, vscode로 실행. 
