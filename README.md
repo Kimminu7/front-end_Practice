@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/48c72092-bf98-4ae9-87a0-bcaf5466cb1f)# Sparta - group 25 ( 개인 프로젝트 )
+# Sparta - group 25 ( 개인 프로젝트 )
 김민우
 
 * 메인 화면 구성 
