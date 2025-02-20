@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Reco</title>
+  <link rel="icon" type="image/x-icon" href="./images/icons8-비행기-이륙-96.png">
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+  <!-- 부트스트랩 CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+
+    * {
+      font-family: "Gowun Dodum";
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      background: #96f104;
+      padding: 10px 0;
+    }
+
+    body {
+      padding-top: 80px;
+      /* 헤더 높이만큼 여백 추가 */
+    }
+
+
+    header>a>h2 {
+      padding-top: 10px;
+    }
+
+    header>a>img {
+      margin-left: 10px;
+    }
+
+    header>ul {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    header>ul>li {
+      margin: 10px;
+      border: 1px solid white;
+      border-radius: 7px;
+    }
+
+    nav {
+      height: 700px;
+      background: #000;
+      background-image: url('./images/백그라운드.webp');
+      background-repeat: no-repeat;
+      background-size: cover;
+      /* 이미지를 부모 영역에 맞게 조정하지만 잘리지 않게 함 */
+      background-position: center;
+      /* 이미지를 중앙에 위치 */
+    }
+
+    .swiper-container {
+      width: 100%;
+      height: 400px;
+      position: relative;
+      overflow: hidden;
+      /* 부모 요소가 초과하는 부분 잘라내기 */
+      box-sizing: border-box;
+      /* 크기 계산 방식 수정 */
+    }
+
+    .swiper-slide {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f1f1f1;
+      font-size: 24px;
+      color: #333;
+      height: 100%;
+      width: 100%;
+      /* 슬라이드 크기를 부모 크기에 맞추기 */
+    }
+
+    .swiper-button-next,
+    .swiper-button-prev {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #ff6600;
+      z-index: 10;
+      font-size: 30px;
+    }
+
+    .swiper-button-prev {
+      left: 10px;
+    }
+
+    .swiper-button-next {
+      right: 10px;
+    }
+
+    .swiper-pagination {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      z-index: 10;
+    }
+
+    .swiper-pagination-bullet {
+      background-color: #ff6600;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #333;
+      color: white;
+    }
+  </style>
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  <script type="module">
+    // Firebase SDK 라이브러리 가져오기
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+    // Firebase 구성 정보 설정
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyASGSDYEPKuBLJKweMWowhTN7cZJ9ZZ2iE",
+      authDomain: "sparta-f56d4.firebaseapp.com",
+      projectId: "sparta-f56d4",
+      storageBucket: "sparta-f56d4.firebasestorage.app",
+      messagingSenderId: "260121902304",
+      appId: "1:260121902304:web:e1773f6e870790cfa2e485",
+      measurementId: "G-YMEHL2WJRD"
+    };
+
+    // Firebase 인스턴스 초기화
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    document.getElementById("resetbtn").addEventListener("click", function () {
+      document.getElementById("image").value = "";
+      document.getElementById("title").value = "";
+      document.getElementById("star").selectedIndex = 0;
+      document.getElementById("comment").value = "";
+    });
+  </script>
+  <script>
+    // Swiper 초기화
+    document.addEventListener("DOMContentLoaded", function () {
+      var swiper = new Swiper(".swiper-container", {
+        loop: true,
+        autoplay: {
+          delay: 3000,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+      });
+    });
+
+  </script>
+</head>
+
+<body>
+  <header class="d-flex flex-wrap  justify-content-between py-3 mb-4">
+    <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+      <svg class="bi me-2" width="0" height="0">
+        <use xlink:href="#bootstrap"></use>
+      </svg>
+      <img src="./images/icons8-비행기-이륙-96.png" alt="로고">
+      <h2>Travel Reco</h2>
+    </a>
+
+    <ul class="nav nav-pills justify-content-center gap-3">
+      <li class="nav-item"><a href="#" class="nav-link active">로그인</a></li>
+      <li class="nav-item"><a href="#" class="nav-link active">질문/FAQs</a></li>
+    </ul>
+  </header>
+
+  <nav>
+    <div class="p-5 mb-4 bg-body-tertiary rounded-3">
+      <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">트레블레코에 오신걸 환영합니다!</h1>
+        <p class="col-md-8 fs-4">트레블 레코는 여행지 추천사이트로 <br>사용자들에게 여행지 정보를 주고받는 웹 사이트 입니다.</p>
+        <a href="./board.html" class="btn btn-info rounded-pill px-3">여행지 보러가기</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Swiper Container -->
+  <nav2>
+    <div class="swiper-container">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <h1>가성비 고려 추천 여행지!</h1>
+        </div>
+        <div class="swiper-slide">
+          <h1>다양한 곳을 다녀요!</h1>
+        </div>
+        <div class="swiper-slide">
+          <h1>이벤트에 참여하고 보상을 받으세요!</h1>
+        </div>
+      </div>
+      <!-- Swiper Pagination -->
+      <div class="swiper-pagination"></div>
+
+      <!-- Swiper Navigation Buttons -->
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+    </div>
+  </nav2>
+
+  <footer>
+    &copy; 2025 Sparta Kim minu, Group 25
+  </footer>
+
+  <!-- 부트스트랩 JS, jQuery와 Popper.js도 필요함 -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

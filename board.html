@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Reco 게시판</title>
+  <link rel="icon" type="image/x-icon" href="./images/icons8-비행기-이륙-96.png">
+  <!-- 부트스트랩 CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+
+    * {
+      font-family: "Gowun Dodum";
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      background: #96f104;
+      padding: 10px 0;
+    }
+
+    body {
+      padding-top: 80px;
+      /* 헤더 높이만큼 여백 추가 */
+    }
+
+
+    header>a>h2 {
+      padding-top: 10px;
+    }
+
+    header>a>img {
+      margin-left: 10px;
+    }
+
+    header>ul {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    header>ul>li {
+      margin: 10px;
+      border: 1px solid white;
+      border-radius: 7px;
+    }
+
+
+    .board {
+      padding: 40px;
+      background: black;
+    }
+
+    .mypostingbox {
+      color: white;
+      width: 600px;
+      margin: 50px auto 0 auto;
+      border: 2px solid white;
+      padding: 20px;
+      border-radius: 5px;
+    }
+
+    .mypostingbox>h2 {
+      text-align: center;
+    }
+
+
+    .mypostingbox>.d-flex>button {
+      margin: 0 5px;
+    }
+
+    nav {
+      padding: 30px;
+      background: blue;
+      background-repeat: no-repeat;
+      background-size: cover;
+      /* 이미지를 부모 영역에 맞게 조정하지만 잘리지 않게 함 */
+      background-position: center;
+      /* 이미지를 중앙에 위치 */
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #333;
+      color: white;
+    }
+  </style>
+  <script type="module">
+    // Firebase SDK 라이브러리 가져오기
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+    // Firebase 구성 정보 설정
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyASGSDYEPKuBLJKweMWowhTN7cZJ9ZZ2iE",
+      authDomain: "sparta-f56d4.firebaseapp.com",
+      projectId: "sparta-f56d4",
+      storageBucket: "sparta-f56d4.firebasestorage.app",
+      messagingSenderId: "260121902304",
+      appId: "1:260121902304:web:e1773f6e870790cfa2e485",
+      measurementId: "G-YMEHL2WJRD"
+    };
+
+    // Firebase 인스턴스 초기화
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    document.getElementById("resetbtn").addEventListener("click", function () {
+      document.getElementById("image").value = "";
+      document.getElementById("title").value = "";
+      document.getElementById("star").selectedIndex = 0;
+      document.getElementById("comment").value = "";
+    });
+
+    $("#postingbtn").click(async function () {
+      let image = $('#image').val();
+      let title = $('#title').val();
+      let star = $('#star').val();
+      let comment = $('#comment').val();
+
+      let doc = {
+        'image': image,
+        'title': title,
+        'star': star,
+        'comment': comment
+      };
+      await addDoc(collection(db, "travels"), doc);
+      alert('저장 완료!');
+      window.location.reload(); // 새로 고침
+    })
+    let docs = await getDocs(collection(db, "travels"));
+    docs.forEach((doc) => {
+      let row = doc.data();
+
+      let image = row['image'];
+      let title = row['title'];
+      let comment = row['comment'];
+      let star = row['star'];
+
+      let temp_html = `
+      <div class="col">
+        <div class="card">
+          <img src="${image}"
+            class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">${title}</h5>
+            <p class="card-text">${star}</p>
+            <p class="card-text">${comment}</p>
+          </div>
+        </div>
+      </div>`;
+      $('#card').append(temp_html);
+    });
+
+  </script>
+</head>
+
+<body>
+  <header class="d-flex flex-wrap  justify-content-between py-3 mb-4">
+    <a href="./index.html"
+      class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+      <svg class="bi me-2" width="0" height="0">
+        <use xlink:href="#bootstrap"></use>
+      </svg>
+      <img src="./images/icons8-비행기-이륙-96.png" alt="로고">
+      <h2>Travel Reco</h2>
+    </a>
+
+    <ul class="nav nav-pills justify-content-center gap-3">
+      <li class="nav-item"><a href="#" class="nav-link active">로그인</a></li>
+      <li class="nav-item"><a href="#" class="nav-link active">질문/FAQs</a></li>
+    </ul>
+  </header>
+
+  <div class="board">
+    <div class="mypostingbox" id="postingbox">
+      <h2>여행지 추천 등록</h2>
+      <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="image" placeholder="여행지 이미지 URL">
+        <label for="floatingInput">여행지 이미지 URL</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="title" placeholder="여행지 명">
+        <label for="floatingInput">여행지 명</label>
+      </div>
+      <div class="input-group mb-3">
+        <label class="input-group-text" for="inputGroupSelect01">별점</label>
+        <select class="form-select" id="star">
+          <option selected>별점선택</option>
+          <option value="⭐">⭐</option>
+          <option value="⭐⭐">⭐⭐</option>
+          <option value="⭐⭐⭐">⭐⭐⭐</option>
+          <option value="⭐⭐⭐⭐">⭐⭐⭐⭐</option>
+          <option value="⭐⭐⭐⭐⭐">⭐⭐⭐⭐⭐</option>
+        </select>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="comment" placeholder="추천 이유">
+        <label for="floatingInput">추천 이유</label>
+      </div>
+      <div class="d-flex justify-content-end gap-2">
+        <button id="resetbtn" type="button" class="btn btn-secondary">초기화</button>
+        <button id="postingbtn" type="button" class="btn btn-danger">기록하기</button>
+      </div>
+    </div>
+  </div>
+
+  <nav>
+    <div class="mycards">
+      <div id="card" class="row row-cols-1 row-cols-md-4 g-4">
+      </div>
+    </div>
+  </nav>
+
+  <footer>
+    &copy; 2025 Sparta Kim minu, Group 25
+  </footer>
+
+  <!-- 부트스트랩 JS, jQuery와 Popper.js도 필요함 -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
